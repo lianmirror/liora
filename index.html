@@ -4,18 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Liora</title>
+<title>Liora Chats</title>
 
 <style>
 :root {
-  --bg: #f6f3ee;
+  --bg: #f5f2ed;
   --card: #ffffff;
-  --text: #252421;
-  --muted: #77736c;
-  --line: #e7e1d9;
-  --dark: #252421;
-  --director: #dce5d8;
-  --studio: #eadde4;
+  --text: #242320;
+  --muted: #7c7871;
+  --line: #e5dfd7;
+  --dark: #242320;
+  --soft: #ebe6df;
+  --accent: #dfe7dc;
+  --danger: #a94c4c;
+  --shadow: 0 12px 35px rgba(35, 30, 25, 0.06);
 }
 
 * {
@@ -24,231 +26,349 @@
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 .app {
-  width: min(920px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 42px 0 80px;
+  width: min(960px, calc(100% - 30px));
+  margin: auto;
+  padding: 38px 0 80px;
 }
 
-.logo {
-  font-size: 13px;
+/* HEADER */
+
+.brand {
+  font-size: 12px;
+  font-weight: 800;
   letter-spacing: 4px;
-  font-weight: 700;
+  color: var(--muted);
 }
 
 h1 {
-  font-size: clamp(34px, 6vw, 58px);
+  font-size: clamp(38px, 7vw, 66px);
   line-height: 1;
-  margin: 24px 0 10px;
+  letter-spacing: -2px;
+  margin: 20px 0 14px;
 }
 
-.subtitle {
+.intro {
   color: var(--muted);
-  margin-bottom: 36px;
+  max-width: 570px;
+  line-height: 1.6;
+  margin: 0 0 30px;
 }
 
-.tools {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+.top-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.tool {
-  padding: 24px;
-  border-radius: 22px;
+/* BUTTONS */
+
+.primary,
+.secondary,
+.icon-button,
+.danger {
+  border-radius: 999px;
+  padding: 11px 17px;
   border: 0;
-  text-align: left;
-  cursor: pointer;
+}
+
+.primary {
+  background: var(--dark);
+  color: white;
+}
+
+.secondary {
+  background: white;
   color: var(--text);
+  border: 1px solid var(--line);
 }
 
-.tool.director {
-  background: var(--director);
+.danger {
+  background: #f7e8e8;
+  color: var(--danger);
 }
 
-.tool.studio {
-  background: var(--studio);
+.icon-button {
+  background: transparent;
+  padding: 7px 10px;
+  color: var(--muted);
 }
 
-.tool small {
-  display: block;
-  margin-bottom: 8px;
-  opacity: .65;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.icon-button:hover {
+  background: var(--soft);
 }
 
-.tool strong {
-  font-size: 21px;
+/* SEARCH */
+
+.search-area {
+  margin-top: 38px;
 }
+
+.search {
+  width: 100%;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: white;
+  outline: none;
+}
+
+.search:focus {
+  border-color: #aaa39a;
+}
+
+/* SECTION */
 
 .section-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 15px;
-  margin-top: 46px;
-  margin-bottom: 18px;
+  margin: 42px 0 17px;
 }
 
 .section-head h2 {
   margin: 0;
+  font-size: 23px;
 }
 
-button {
-  font: inherit;
-}
-
-.primary,
-.secondary {
-  border-radius: 100px;
-  padding: 11px 17px;
-  cursor: pointer;
-}
-
-.primary {
-  border: 0;
-  background: var(--dark);
-  color: white;
-}
-
-.secondary {
-  border: 1px solid var(--line);
-  background: white;
-  color: var(--text);
-}
+/* PROJECTS */
 
 .projects {
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 .project {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: 22px;
   padding: 20px;
+  box-shadow: var(--shadow);
 }
 
-.project-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.project h3 {
-  margin: 0;
-}
-
-.chat-list {
-  display: grid;
-  gap: 9px;
-  margin-top: 16px;
-}
-
-.chat {
-  border-top: 1px solid var(--line);
-  padding-top: 13px;
+.project-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 14px;
 }
 
-.chat-info strong {
-  display: block;
-  margin-bottom: 4px;
+.project-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.project-title h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.count {
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 12px;
+  padding: 5px 9px;
+  border-radius: 999px;
+}
+
+.project-actions {
+  display: flex;
+  gap: 3px;
+}
+
+/* CHATS */
+
+.chat-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 17px;
+}
+
+.chat {
+  border-top: 1px solid var(--line);
+  padding: 14px 2px 4px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.favorite {
+  border: 0;
+  background: transparent;
+  font-size: 20px;
+  padding: 4px;
+  color: #c6c0b7;
+}
+
+.favorite.active {
+  color: #c49736;
+}
+
+.chat-info {
+  min-width: 0;
+}
+
+.chat-title {
+  font-weight: 700;
+  margin-bottom: 5px;
+  word-break: break-word;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .tag {
-  display: inline-block;
   font-size: 11px;
   color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: .8px;
+  background: var(--soft);
+  padding: 4px 8px;
+  border-radius: 999px;
 }
+
+.chat-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.open-button {
+  border: 0;
+  border-radius: 999px;
+  background: var(--dark);
+  color: white;
+  padding: 9px 14px;
+}
+
+.edit-button {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: white;
+  padding: 9px 12px;
+}
+
+/* EMPTY */
 
 .empty {
-  color: var(--muted);
-  background: rgba(255,255,255,.55);
-  padding: 22px;
-  border-radius: 18px;
   text-align: center;
+  padding: 28px 18px;
+  border: 1px dashed var(--line);
+  border-radius: 18px;
+  color: var(--muted);
+  line-height: 1.6;
 }
 
+/* DIALOG */
+
 dialog {
-  width: min(500px, calc(100% - 28px));
+  width: min(510px, calc(100% - 26px));
   border: 0;
   border-radius: 24px;
   padding: 0;
-  box-shadow: 0 25px 80px rgba(0,0,0,.18);
+  box-shadow: 0 30px 100px rgba(0,0,0,.22);
 }
 
 dialog::backdrop {
-  background: rgba(30,28,25,.45);
+  background: rgba(25, 23, 20, .48);
 }
 
 .modal {
-  padding: 26px;
+  padding: 27px;
 }
 
 .modal h2 {
-  margin-top: 0;
+  margin: 0 0 8px;
+}
+
+.modal-description {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 label {
   display: block;
   font-size: 13px;
   font-weight: 700;
-  margin: 17px 0 7px;
+  margin: 18px 0 7px;
 }
 
 input,
 select {
   width: 100%;
-  padding: 13px;
-  border-radius: 12px;
   border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 13px;
   background: white;
-  font: inherit;
+  outline: none;
 }
 
-.actions {
+input:focus,
+select:focus {
+  border-color: #aaa39a;
+}
+
+.modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 9px;
+  gap: 8px;
   margin-top: 24px;
 }
 
+/* FOOTER */
+
 .notice {
-  margin-top: 25px;
   color: var(--muted);
   font-size: 12px;
-  line-height: 1.5;
+  line-height: 1.6;
+  margin-top: 30px;
 }
 
-@media (max-width: 620px) {
+/* MOBILE */
+
+@media (max-width: 650px) {
+
   .app {
     padding-top: 28px;
   }
 
-  .tools {
-    grid-template-columns: 1fr;
-  }
-
-  .section-head {
+  .project-header {
     align-items: flex-start;
   }
 
   .chat {
-    align-items: flex-start;
-    flex-direction: column;
+    grid-template-columns: auto 1fr;
+  }
+
+  .chat-actions {
+    grid-column: 2;
+  }
+
+  .open-button {
+    flex: 1;
+  }
+
+  .edit-button {
+    flex: 1;
   }
 }
 </style>
@@ -258,296 +378,206 @@ select {
 
 <main class="app">
 
-  <div class="logo">LIORA</div>
+  <div class="brand">LIORA</div>
 
-  <h1>Dein kreativer Workspace.</h1>
+  <h1>Chats</h1>
 
-  <p class="subtitle">
-    Plane. Erschaffe. Und finde deine wichtigsten Gespräche wieder.
+  <p class="intro">
+    Deine Gespräche. Deine Ordnung.
+    Organisiere wichtige Chats in deinen eigenen Bereichen
+    und finde sie wieder, wenn du sie brauchst.
   </p>
 
-  <section class="tools">
-
-    <button class="tool director" onclick="startChat('Director')">
-      <small>Strategie & Planung</small>
-      <strong>Director starten →</strong>
+  <div class="top-actions">
+    <button class="primary" onclick="openNewChat()">
+      + Chat speichern
     </button>
 
-    <button class="tool studio" onclick="startChat('Studio')">
-      <small>Kreation & Umsetzung</small>
-      <strong>Studio starten →</strong>
+    <button class="secondary" onclick="openNewProject()">
+      + Bereich erstellen
     </button>
+  </div>
 
-  </section>
+
+  <div class="search-area">
+    <input
+      class="search"
+      id="search"
+      type="search"
+      placeholder="Chats durchsuchen …"
+      oninput="render()"
+    >
+  </div>
 
 
   <div class="section-head">
-    <h2>Meine Projekte</h2>
-
-    <button class="primary" onclick="openProjectModal()">
-      + Projekt
-    </button>
+    <h2>Meine Bereiche</h2>
   </div>
 
   <div id="projects" class="projects"></div>
 
-
   <p class="notice">
-    Testversion: Deine Projekte und Chat-Verweise werden momentan nur
-    in diesem Browser auf diesem Gerät gespeichert.
+    Diese Testversion speichert deine Organisation nur lokal
+    in diesem Browser. Es werden keine Chat-Inhalte in Liora gespeichert.
   </p>
 
 </main>
 
 
+<!-- BEREICH -->
+
 <dialog id="projectDialog">
+
   <div class="modal">
 
-    <h2>Neues Projekt</h2>
+    <h2 id="projectDialogTitle">Bereich erstellen</h2>
 
-    <label for="projectName">Projektname</label>
+    <p class="modal-description">
+      Du entscheidest selbst, wie du deine Chats organisieren möchtest.
+    </p>
+
+    <label for="projectName">Name</label>
+
     <input
       id="projectName"
-      placeholder="z. B. NYRA"
+      placeholder="z. B. NYRA, Kunden oder Privat"
       autocomplete="off"
     >
 
-    <div class="actions">
-      <button class="secondary" onclick="closeDialog('projectDialog')">
+    <input type="hidden" id="editProjectIndex">
+
+    <div class="modal-actions">
+
+      <button
+        class="secondary"
+        onclick="closeDialog('projectDialog')"
+      >
         Abbrechen
       </button>
 
-      <button class="primary" onclick="saveProject()">
-        Projekt erstellen
+      <button
+        class="primary"
+        onclick="saveProject()"
+      >
+        Speichern
       </button>
+
     </div>
 
   </div>
+
 </dialog>
 
 
+<!-- CHAT -->
+
 <dialog id="chatDialog">
+
   <div class="modal">
 
-    <h2>Chat ablegen</h2>
+    <h2 id="chatDialogTitle">Chat speichern</h2>
 
-    <label for="chatTitle">Name des Chats</label>
+    <p class="modal-description">
+      Speichere hier den Link zu einem Chat,
+      den du später wiederfinden möchtest.
+    </p>
+
+    <label for="chatTitle">
+      Titel
+    </label>
+
     <input
       id="chatTitle"
       placeholder="z. B. Contentplan Oktober"
       autocomplete="off"
     >
 
-    <label for="chatUrl">Link zum Chat</label>
+
+    <label for="chatUrl">
+      Chat-Link
+    </label>
+
     <input
       id="chatUrl"
-      placeholder="https://..."
+      placeholder="https://chatgpt.com/..."
       autocomplete="off"
     >
 
-    <label for="chatType">Liora Bereich</label>
-    <select id="chatType">
-      <option>Director</option>
-      <option>Studio</option>
-    </select>
 
-    <input type="hidden" id="chatProject">
+    <label for="chatProject">
+      Bereich
+    </label>
 
-    <div class="actions">
-      <button class="secondary" onclick="closeDialog('chatDialog')">
+    <select id="chatProject"></select>
+
+
+    <label for="chatCategory">
+      Kategorie
+    </label>
+
+    <input
+      id="chatCategory"
+      placeholder="z. B. Content, Strategie, Ideen"
+      autocomplete="off"
+    >
+
+    <input type="hidden" id="editChatProject">
+    <input type="hidden" id="editChatIndex">
+
+
+    <div class="modal-actions">
+
+      <button
+        class="secondary"
+        onclick="closeDialog('chatDialog')"
+      >
         Abbrechen
       </button>
 
-      <button class="primary" onclick="saveChat()">
+      <button
+        class="primary"
+        onclick="saveChat()"
+      >
         Chat speichern
       </button>
+
     </div>
 
   </div>
+
 </dialog>
 
 
 <script>
-let projects = JSON.parse(localStorage.getItem("liora-projects")) || [];
+
+/* ---------------------------
+   DATEN LADEN
+---------------------------- */
+
+let projects =
+  JSON.parse(localStorage.getItem("liora-chat-projects")) ||
+  JSON.parse(localStorage.getItem("liora-projects")) ||
+  [];
+
+
+/* ---------------------------
+   SPEICHERN
+---------------------------- */
 
 function persist() {
-  localStorage.setItem("liora-projects", JSON.stringify(projects));
-}
-
-function render() {
-  const container = document.getElementById("projects");
-
-  if (!projects.length) {
-    container.innerHTML = `
-      <div class="empty">
-        Noch keine Projekte.<br><br>
-        Lege zum Beispiel <strong>NYRA</strong> oder
-        <strong>LIAN</strong> an.
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = projects.map((project, projectIndex) => {
-
-    const chats = project.chats || [];
-
-    const chatHtml = chats.length
-      ? chats.map((chat, chatIndex) => `
-          <div class="chat">
-
-            <div class="chat-info">
-              <strong>${escapeHtml(chat.title)}</strong>
-              <span class="tag">${escapeHtml(chat.type)}</span>
-            </div>
-
-            <div>
-              <button
-                class="secondary"
-                onclick="openChat(${projectIndex}, ${chatIndex})"
-              >
-                Öffnen →
-              </button>
-
-              <button
-                class="secondary"
-                onclick="deleteChat(${projectIndex}, ${chatIndex})"
-              >
-                ×
-              </button>
-            </div>
-
-          </div>
-        `).join("")
-      : `<div class="empty">Noch keine Chats abgelegt.</div>`;
-
-    return `
-      <article class="project">
-
-        <div class="project-top">
-          <h3>${escapeHtml(project.name)}</h3>
-
-          <button
-            class="primary"
-            onclick="openChatModal(${projectIndex})"
-          >
-            + Chat
-          </button>
-        </div>
-
-        <div class="chat-list">
-          ${chatHtml}
-        </div>
-
-      </article>
-    `;
-  }).join("");
-}
-
-function openProjectModal() {
-  document.getElementById("projectName").value = "";
-  document.getElementById("projectDialog").showModal();
-}
-
-function saveProject() {
-  const input = document.getElementById("projectName");
-  const name = input.value.trim();
-
-  if (!name) {
-    alert("Bitte gib deinem Projekt einen Namen.");
-    return;
-  }
-
-  projects.push({
-    name: name,
-    chats: []
-  });
-
-  persist();
-  render();
-  closeDialog("projectDialog");
-}
-
-function openChatModal(projectIndex) {
-  document.getElementById("chatProject").value = projectIndex;
-  document.getElementById("chatTitle").value = "";
-  document.getElementById("chatUrl").value = "";
-  document.getElementById("chatType").value = "Director";
-  document.getElementById("chatDialog").showModal();
-}
-
-function saveChat() {
-  const projectIndex =
-    Number(document.getElementById("chatProject").value);
-
-  const title =
-    document.getElementById("chatTitle").value.trim();
-
-  const url =
-    document.getElementById("chatUrl").value.trim();
-
-  const type =
-    document.getElementById("chatType").value;
-
-  if (!title || !url) {
-    alert("Bitte gib einen Namen und einen Link ein.");
-    return;
-  }
-
-  try {
-    const parsed = new URL(url);
-
-    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
-      throw new Error();
-    }
-  } catch {
-    alert("Bitte füge einen gültigen Link ein.");
-    return;
-  }
-
-  projects[projectIndex].chats.push({
-    title,
-    url,
-    type
-  });
-
-  persist();
-  render();
-  closeDialog("chatDialog");
-}
-
-function openChat(projectIndex, chatIndex) {
-  const chat = projects[projectIndex].chats[chatIndex];
-  window.open(chat.url, "_blank", "noopener,noreferrer");
-}
-
-function deleteChat(projectIndex, chatIndex) {
-  const confirmed = confirm(
-    "Möchtest du diesen Eintrag wirklich aus Liora entfernen?"
-  );
-
-  if (!confirmed) return;
-
-  projects[projectIndex].chats.splice(chatIndex, 1);
-
-  persist();
-  render();
-}
-
-function closeDialog(id) {
-  document.getElementById(id).close();
-}
-
-function startChat(type) {
-  alert(
-    type +
-    " wird später deinen passenden Liora-Chat starten. " +
-    "Für den ersten Test verbinden wir diesen Button noch nicht."
+  localStorage.setItem(
+    "liora-chat-projects",
+    JSON.stringify(projects)
   );
 }
+
+
+/* ---------------------------
+   SICHERE TEXTAUSGABE
+---------------------------- */
 
 function escapeHtml(text) {
-  return String(text)
+  return String(text || "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
@@ -555,7 +585,713 @@ function escapeHtml(text) {
     .replaceAll("'", "&#039;");
 }
 
+
+/* ---------------------------
+   ANZEIGE
+---------------------------- */
+
+function render() {
+
+  const container =
+    document.getElementById("projects");
+
+  const search =
+    document.getElementById("search")
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  if (!projects.length) {
+
+    container.innerHTML = `
+      <div class="empty">
+        Noch keine Bereiche vorhanden.<br><br>
+        Erstelle deinen ersten Bereich und
+        organisiere deine Chats so, wie es zu dir passt.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  let html = "";
+
+
+  projects.forEach((project, projectIndex) => {
+
+    let chats = project.chats || [];
+
+
+    chats = chats
+      .map((chat, chatIndex) => ({
+        ...chat,
+        originalIndex: chatIndex
+      }))
+      .filter(chat => {
+
+        if (!search) return true;
+
+        return [
+          chat.title,
+          chat.category,
+          project.name
+        ]
+        .join(" ")
+        .toLowerCase()
+        .includes(search);
+
+      })
+      .sort((a, b) =>
+        Number(b.favorite) - Number(a.favorite)
+      );
+
+
+    if (search && chats.length === 0) {
+      return;
+    }
+
+
+    const chatsHtml =
+      chats.length
+
+      ? chats.map(chat => `
+
+        <div class="chat">
+
+          <button
+            class="favorite ${chat.favorite ? "active" : ""}"
+            onclick="toggleFavorite(
+              ${projectIndex},
+              ${chat.originalIndex}
+            )"
+            title="Favorit"
+          >
+            ★
+          </button>
+
+
+          <div class="chat-info">
+
+            <div class="chat-title">
+              ${escapeHtml(chat.title)}
+            </div>
+
+            <div class="meta">
+
+              ${
+                chat.category
+                ? `
+                  <span class="tag">
+                    ${escapeHtml(chat.category)}
+                  </span>
+                `
+                : ""
+              }
+
+              ${
+                chat.favorite
+                ? `<span class="tag">Favorit</span>`
+                : ""
+              }
+
+            </div>
+
+          </div>
+
+
+          <div class="chat-actions">
+
+            <button
+              class="open-button"
+              onclick="openChat(
+                ${projectIndex},
+                ${chat.originalIndex}
+              )"
+            >
+              Öffnen →
+            </button>
+
+            <button
+              class="edit-button"
+              onclick="editChat(
+                ${projectIndex},
+                ${chat.originalIndex}
+              )"
+            >
+              Bearbeiten
+            </button>
+
+          </div>
+
+        </div>
+
+      `).join("")
+
+      : `
+        <div class="empty">
+          Noch keine Chats in diesem Bereich.
+        </div>
+      `;
+
+
+    html += `
+
+      <article class="project">
+
+        <div class="project-header">
+
+          <div class="project-title">
+
+            <h3>
+              ${escapeHtml(project.name)}
+            </h3>
+
+            <span class="count">
+              ${(project.chats || []).length}
+            </span>
+
+          </div>
+
+
+          <div class="project-actions">
+
+            <button
+              class="icon-button"
+              onclick="openChatForProject(${projectIndex})"
+              title="Chat hinzufügen"
+            >
+              + Chat
+            </button>
+
+            <button
+              class="icon-button"
+              onclick="editProject(${projectIndex})"
+              title="Bereich bearbeiten"
+            >
+              ✎
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="chat-list">
+          ${chatsHtml}
+        </div>
+
+      </article>
+
+    `;
+
+  });
+
+
+  if (!html && search) {
+
+    html = `
+      <div class="empty">
+        Keine passenden Chats gefunden.
+      </div>
+    `;
+
+  }
+
+
+  container.innerHTML = html;
+}
+
+
+/* ---------------------------
+   BEREICH ERSTELLEN
+---------------------------- */
+
+function openNewProject() {
+
+  document.getElementById(
+    "projectDialogTitle"
+  ).textContent = "Bereich erstellen";
+
+  document.getElementById(
+    "projectName"
+  ).value = "";
+
+  document.getElementById(
+    "editProjectIndex"
+  ).value = "";
+
+  document.getElementById(
+    "projectDialog"
+  ).showModal();
+
+}
+
+
+function editProject(index) {
+
+  document.getElementById(
+    "projectDialogTitle"
+  ).textContent = "Bereich bearbeiten";
+
+  document.getElementById(
+    "projectName"
+  ).value = projects[index].name;
+
+  document.getElementById(
+    "editProjectIndex"
+  ).value = index;
+
+  document.getElementById(
+    "projectDialog"
+  ).showModal();
+
+}
+
+
+function saveProject() {
+
+  const name =
+    document.getElementById(
+      "projectName"
+    ).value.trim();
+
+  const editIndex =
+    document.getElementById(
+      "editProjectIndex"
+    ).value;
+
+
+  if (!name) {
+
+    alert(
+      "Bitte gib deinem Bereich einen Namen."
+    );
+
+    return;
+  }
+
+
+  if (editIndex === "") {
+
+    projects.push({
+      name: name,
+      chats: []
+    });
+
+  } else {
+
+    projects[Number(editIndex)].name = name;
+
+  }
+
+
+  persist();
+  render();
+
+  closeDialog("projectDialog");
+}
+
+
+/* ---------------------------
+   CHAT NEU
+---------------------------- */
+
+function fillProjectSelect(selectedIndex = 0) {
+
+  const select =
+    document.getElementById("chatProject");
+
+  select.innerHTML =
+    projects.map((project, index) => `
+
+      <option
+        value="${index}"
+        ${index === selectedIndex ? "selected" : ""}
+      >
+        ${escapeHtml(project.name)}
+      </option>
+
+    `).join("");
+
+}
+
+
+function openNewChat() {
+
+  if (!projects.length) {
+
+    alert(
+      "Erstelle zuerst einen Bereich für deine Chats."
+    );
+
+    openNewProject();
+
+    return;
+  }
+
+
+  document.getElementById(
+    "chatDialogTitle"
+  ).textContent = "Chat speichern";
+
+  document.getElementById(
+    "chatTitle"
+  ).value = "";
+
+  document.getElementById(
+    "chatUrl"
+  ).value = "";
+
+  document.getElementById(
+    "chatCategory"
+  ).value = "";
+
+  document.getElementById(
+    "editChatProject"
+  ).value = "";
+
+  document.getElementById(
+    "editChatIndex"
+  ).value = "";
+
+  fillProjectSelect();
+
+  document.getElementById(
+    "chatDialog"
+  ).showModal();
+
+}
+
+
+function openChatForProject(projectIndex) {
+
+  openNewChat();
+
+  fillProjectSelect(projectIndex);
+
+}
+
+
+/* ---------------------------
+   CHAT SPEICHERN
+---------------------------- */
+
+function saveChat() {
+
+  const title =
+    document.getElementById(
+      "chatTitle"
+    ).value.trim();
+
+  const url =
+    document.getElementById(
+      "chatUrl"
+    ).value.trim();
+
+  const category =
+    document.getElementById(
+      "chatCategory"
+    ).value.trim();
+
+  const newProjectIndex =
+    Number(
+      document.getElementById(
+        "chatProject"
+      ).value
+    );
+
+  const oldProjectValue =
+    document.getElementById(
+      "editChatProject"
+    ).value;
+
+  const oldChatValue =
+    document.getElementById(
+      "editChatIndex"
+    ).value;
+
+
+  if (!title || !url) {
+
+    alert(
+      "Bitte gib einen Titel und einen Chat-Link ein."
+    );
+
+    return;
+  }
+
+
+  try {
+
+    const parsed = new URL(url);
+
+    if (
+      parsed.protocol !== "https:" &&
+      parsed.protocol !== "http:"
+    ) {
+      throw new Error();
+    }
+
+  } catch {
+
+    alert(
+      "Bitte füge einen gültigen Link ein."
+    );
+
+    return;
+  }
+
+
+  /* NEUER CHAT */
+
+  if (
+    oldProjectValue === "" ||
+    oldChatValue === ""
+  ) {
+
+    projects[newProjectIndex].chats.push({
+
+      title: title,
+      url: url,
+      category: category,
+      favorite: false
+
+    });
+
+  }
+
+  /* CHAT BEARBEITEN */
+
+  else {
+
+    const oldProjectIndex =
+      Number(oldProjectValue);
+
+    const oldChatIndex =
+      Number(oldChatValue);
+
+    const oldChat =
+      projects[oldProjectIndex]
+        .chats[oldChatIndex];
+
+
+    const updatedChat = {
+
+      title: title,
+      url: url,
+      category: category,
+      favorite: oldChat.favorite || false
+
+    };
+
+
+    projects[oldProjectIndex]
+      .chats
+      .splice(oldChatIndex, 1);
+
+
+    projects[newProjectIndex]
+      .chats
+      .push(updatedChat);
+
+  }
+
+
+  persist();
+  render();
+
+  closeDialog("chatDialog");
+}
+
+
+/* ---------------------------
+   CHAT BEARBEITEN
+---------------------------- */
+
+function editChat(projectIndex, chatIndex) {
+
+  const chat =
+    projects[projectIndex]
+      .chats[chatIndex];
+
+
+  document.getElementById(
+    "chatDialogTitle"
+  ).textContent = "Chat bearbeiten";
+
+
+  document.getElementById(
+    "chatTitle"
+  ).value = chat.title || "";
+
+
+  document.getElementById(
+    "chatUrl"
+  ).value = chat.url || "";
+
+
+  document.getElementById(
+    "chatCategory"
+  ).value = chat.category || "";
+
+
+  document.getElementById(
+    "editChatProject"
+  ).value = projectIndex;
+
+
+  document.getElementById(
+    "editChatIndex"
+  ).value = chatIndex;
+
+
+  fillProjectSelect(projectIndex);
+
+
+  document.getElementById(
+    "chatDialog"
+  ).showModal();
+
+}
+
+
+/* ---------------------------
+   CHAT ÖFFNEN
+---------------------------- */
+
+function openChat(projectIndex, chatIndex) {
+
+  const chat =
+    projects[projectIndex]
+      .chats[chatIndex];
+
+  window.open(
+    chat.url,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+
+/* ---------------------------
+   FAVORIT
+---------------------------- */
+
+function toggleFavorite(
+  projectIndex,
+  chatIndex
+) {
+
+  const chat =
+    projects[projectIndex]
+      .chats[chatIndex];
+
+  chat.favorite = !chat.favorite;
+
+  persist();
+  render();
+
+}
+
+
+/* ---------------------------
+   CHAT LÖSCHEN
+---------------------------- */
+
+function deleteChat(
+  projectIndex,
+  chatIndex
+) {
+
+  const chat =
+    projects[projectIndex]
+      .chats[chatIndex];
+
+
+  const confirmed = confirm(
+    'Chat "' +
+    chat.title +
+    '" aus Liora entfernen?'
+  );
+
+
+  if (!confirmed) return;
+
+
+  projects[projectIndex]
+    .chats
+    .splice(chatIndex, 1);
+
+
+  persist();
+  render();
+
+}
+
+
+/* ---------------------------
+   BEREICH LÖSCHEN
+---------------------------- */
+
+function deleteProject(index) {
+
+  const project = projects[index];
+
+  const count =
+    (project.chats || []).length;
+
+
+  let message =
+    'Bereich "' +
+    project.name +
+    '" löschen?';
+
+
+  if (count > 0) {
+
+    message +=
+      "\n\nAchtung: Dadurch werden auch " +
+      count +
+      " gespeicherte Chat-Verweise aus Liora entfernt.";
+
+  }
+
+
+  const confirmed = confirm(message);
+
+  if (!confirmed) return;
+
+
+  projects.splice(index, 1);
+
+  persist();
+  render();
+
+}
+
+
+/* ---------------------------
+   DIALOG SCHLIESSEN
+---------------------------- */
+
+function closeDialog(id) {
+
+  document
+    .getElementById(id)
+    .close();
+
+}
+
+
+/* ---------------------------
+   START
+---------------------------- */
+
 render();
+
 </script>
 
 </body>
