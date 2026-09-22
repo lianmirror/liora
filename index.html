@@ -1,22 +1,562 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Liora</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Liora</title>
+
+<style>
+:root {
+  --bg: #f6f3ee;
+  --card: #ffffff;
+  --text: #252421;
+  --muted: #77736c;
+  --line: #e7e1d9;
+  --dark: #252421;
+  --director: #dce5d8;
+  --studio: #eadde4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app {
+  width: min(920px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 42px 0 80px;
+}
+
+.logo {
+  font-size: 13px;
+  letter-spacing: 4px;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: clamp(34px, 6vw, 58px);
+  line-height: 1;
+  margin: 24px 0 10px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-bottom: 36px;
+}
+
+.tools {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.tool {
+  padding: 24px;
+  border-radius: 22px;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.tool.director {
+  background: var(--director);
+}
+
+.tool.studio {
+  background: var(--studio);
+}
+
+.tool small {
+  display: block;
+  margin-bottom: 8px;
+  opacity: .65;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tool strong {
+  font-size: 21px;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 46px;
+  margin-bottom: 18px;
+}
+
+.section-head h2 {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+}
+
+.primary,
+.secondary {
+  border-radius: 100px;
+  padding: 11px 17px;
+  cursor: pointer;
+}
+
+.primary {
+  border: 0;
+  background: var(--dark);
+  color: white;
+}
+
+.secondary {
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--text);
+}
+
+.projects {
+  display: grid;
+  gap: 12px;
+}
+
+.project {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.project-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.project h3 {
+  margin: 0;
+}
+
+.chat-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.chat {
+  border-top: 1px solid var(--line);
+  padding-top: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+.chat-info strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+}
+
+.empty {
+  color: var(--muted);
+  background: rgba(255,255,255,.55);
+  padding: 22px;
+  border-radius: 18px;
+  text-align: center;
+}
+
+dialog {
+  width: min(500px, calc(100% - 28px));
+  border: 0;
+  border-radius: 24px;
+  padding: 0;
+  box-shadow: 0 25px 80px rgba(0,0,0,.18);
+}
+
+dialog::backdrop {
+  background: rgba(30,28,25,.45);
+}
+
+.modal {
+  padding: 26px;
+}
+
+.modal h2 {
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 17px 0 7px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: white;
+  font: inherit;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 24px;
+}
+
+.notice {
+  margin-top: 25px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 620px) {
+  .app {
+    padding-top: 28px;
+  }
+
+  .tools {
+    grid-template-columns: 1fr;
+  }
+
+  .section-head {
+    align-items: flex-start;
+  }
+
+  .chat {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+</style>
 </head>
 
 <body>
-  <h1>Liora</h1>
-  <p>Strategie- & Kreativsystem</p>
 
-  <h2>Willkommen in deinem Workspace.</h2>
+<main class="app">
 
-  <button>Liora Director starten</button>
-  <button>Liora Studio starten</button>
+  <div class="logo">LIORA</div>
 
-  <h2>Meine Projekte</h2>
+  <h1>Dein kreativer Workspace.</h1>
 
-  <p>Hier werden später deine Projekte und gespeicherten Chats angezeigt.</p>
+  <p class="subtitle">
+    Plane. Erschaffe. Und finde deine wichtigsten Gespräche wieder.
+  </p>
+
+  <section class="tools">
+
+    <button class="tool director" onclick="startChat('Director')">
+      <small>Strategie & Planung</small>
+      <strong>Director starten →</strong>
+    </button>
+
+    <button class="tool studio" onclick="startChat('Studio')">
+      <small>Kreation & Umsetzung</small>
+      <strong>Studio starten →</strong>
+    </button>
+
+  </section>
+
+
+  <div class="section-head">
+    <h2>Meine Projekte</h2>
+
+    <button class="primary" onclick="openProjectModal()">
+      + Projekt
+    </button>
+  </div>
+
+  <div id="projects" class="projects"></div>
+
+
+  <p class="notice">
+    Testversion: Deine Projekte und Chat-Verweise werden momentan nur
+    in diesem Browser auf diesem Gerät gespeichert.
+  </p>
+
+</main>
+
+
+<dialog id="projectDialog">
+  <div class="modal">
+
+    <h2>Neues Projekt</h2>
+
+    <label for="projectName">Projektname</label>
+    <input
+      id="projectName"
+      placeholder="z. B. NYRA"
+      autocomplete="off"
+    >
+
+    <div class="actions">
+      <button class="secondary" onclick="closeDialog('projectDialog')">
+        Abbrechen
+      </button>
+
+      <button class="primary" onclick="saveProject()">
+        Projekt erstellen
+      </button>
+    </div>
+
+  </div>
+</dialog>
+
+
+<dialog id="chatDialog">
+  <div class="modal">
+
+    <h2>Chat ablegen</h2>
+
+    <label for="chatTitle">Name des Chats</label>
+    <input
+      id="chatTitle"
+      placeholder="z. B. Contentplan Oktober"
+      autocomplete="off"
+    >
+
+    <label for="chatUrl">Link zum Chat</label>
+    <input
+      id="chatUrl"
+      placeholder="https://..."
+      autocomplete="off"
+    >
+
+    <label for="chatType">Liora Bereich</label>
+    <select id="chatType">
+      <option>Director</option>
+      <option>Studio</option>
+    </select>
+
+    <input type="hidden" id="chatProject">
+
+    <div class="actions">
+      <button class="secondary" onclick="closeDialog('chatDialog')">
+        Abbrechen
+      </button>
+
+      <button class="primary" onclick="saveChat()">
+        Chat speichern
+      </button>
+    </div>
+
+  </div>
+</dialog>
+
+
+<script>
+let projects = JSON.parse(localStorage.getItem("liora-projects")) || [];
+
+function persist() {
+  localStorage.setItem("liora-projects", JSON.stringify(projects));
+}
+
+function render() {
+  const container = document.getElementById("projects");
+
+  if (!projects.length) {
+    container.innerHTML = `
+      <div class="empty">
+        Noch keine Projekte.<br><br>
+        Lege zum Beispiel <strong>NYRA</strong> oder
+        <strong>LIAN</strong> an.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = projects.map((project, projectIndex) => {
+
+    const chats = project.chats || [];
+
+    const chatHtml = chats.length
+      ? chats.map((chat, chatIndex) => `
+          <div class="chat">
+
+            <div class="chat-info">
+              <strong>${escapeHtml(chat.title)}</strong>
+              <span class="tag">${escapeHtml(chat.type)}</span>
+            </div>
+
+            <div>
+              <button
+                class="secondary"
+                onclick="openChat(${projectIndex}, ${chatIndex})"
+              >
+                Öffnen →
+              </button>
+
+              <button
+                class="secondary"
+                onclick="deleteChat(${projectIndex}, ${chatIndex})"
+              >
+                ×
+              </button>
+            </div>
+
+          </div>
+        `).join("")
+      : `<div class="empty">Noch keine Chats abgelegt.</div>`;
+
+    return `
+      <article class="project">
+
+        <div class="project-top">
+          <h3>${escapeHtml(project.name)}</h3>
+
+          <button
+            class="primary"
+            onclick="openChatModal(${projectIndex})"
+          >
+            + Chat
+          </button>
+        </div>
+
+        <div class="chat-list">
+          ${chatHtml}
+        </div>
+
+      </article>
+    `;
+  }).join("");
+}
+
+function openProjectModal() {
+  document.getElementById("projectName").value = "";
+  document.getElementById("projectDialog").showModal();
+}
+
+function saveProject() {
+  const input = document.getElementById("projectName");
+  const name = input.value.trim();
+
+  if (!name) {
+    alert("Bitte gib deinem Projekt einen Namen.");
+    return;
+  }
+
+  projects.push({
+    name: name,
+    chats: []
+  });
+
+  persist();
+  render();
+  closeDialog("projectDialog");
+}
+
+function openChatModal(projectIndex) {
+  document.getElementById("chatProject").value = projectIndex;
+  document.getElementById("chatTitle").value = "";
+  document.getElementById("chatUrl").value = "";
+  document.getElementById("chatType").value = "Director";
+  document.getElementById("chatDialog").showModal();
+}
+
+function saveChat() {
+  const projectIndex =
+    Number(document.getElementById("chatProject").value);
+
+  const title =
+    document.getElementById("chatTitle").value.trim();
+
+  const url =
+    document.getElementById("chatUrl").value.trim();
+
+  const type =
+    document.getElementById("chatType").value;
+
+  if (!title || !url) {
+    alert("Bitte gib einen Namen und einen Link ein.");
+    return;
+  }
+
+  try {
+    const parsed = new URL(url);
+
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+      throw new Error();
+    }
+  } catch {
+    alert("Bitte füge einen gültigen Link ein.");
+    return;
+  }
+
+  projects[projectIndex].chats.push({
+    title,
+    url,
+    type
+  });
+
+  persist();
+  render();
+  closeDialog("chatDialog");
+}
+
+function openChat(projectIndex, chatIndex) {
+  const chat = projects[projectIndex].chats[chatIndex];
+  window.open(chat.url, "_blank", "noopener,noreferrer");
+}
+
+function deleteChat(projectIndex, chatIndex) {
+  const confirmed = confirm(
+    "Möchtest du diesen Eintrag wirklich aus Liora entfernen?"
+  );
+
+  if (!confirmed) return;
+
+  projects[projectIndex].chats.splice(chatIndex, 1);
+
+  persist();
+  render();
+}
+
+function closeDialog(id) {
+  document.getElementById(id).close();
+}
+
+function startChat(type) {
+  alert(
+    type +
+    " wird später deinen passenden Liora-Chat starten. " +
+    "Für den ersten Test verbinden wir diesen Button noch nicht."
+  );
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+render();
+</script>
+
 </body>
 </html>
