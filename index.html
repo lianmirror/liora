@@ -1543,10 +1543,13 @@ document
   button.disabled = true;
   button.textContent = "Zugang wird erstellt …";
 
-  const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password
-  });
+ const { data, error } = await supabaseClient.auth.signUp({
+  email,
+  password,
+  options: {
+    emailRedirectTo: "https://lianmirror.github.io/liora/"
+  }
+});
 
   button.disabled = false;
   button.textContent = "Zugang erstellen";
