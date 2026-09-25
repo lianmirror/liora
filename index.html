@@ -666,7 +666,7 @@
 
 
   /* =========================
-     CHATS
+    ORGANIZER
   ========================= */
 
   .chat-list {
@@ -1119,7 +1119,7 @@
   <h2>Neues Passwort</h2>
 
   <p class="login-text">
-    Lege jetzt dein neues Passwort für Liora Chats fest.
+    Lege jetzt dein neues Passwort für Liora Organizer fest.
   </p>
 
   <label for="newPassword">Neues Passwort</label>
@@ -1150,7 +1150,7 @@
   <h2>Zugang aktivieren</h2>
 
   <p class="login-text">
-    Aktiviere deinen persönlichen Zugang zu Liora Chats.
+    Aktiviere deinen persönlichen Zugang zu Liora Organizer.
   </p>
 
   <label for="activateEmail">E-Mail-Adresse</label>
@@ -1193,7 +1193,7 @@
 </div>
       
       <p class="login-note">
-        Der Zugang zu Liora Chats ist ausschließlich
+        Der Zugang zu Liora Organizer ist ausschließlich
         für freigeschaltete Liora Kundinnen vorgesehen.
       </p>
 
@@ -1211,7 +1211,7 @@
     <div class="app-header">
 
       <div class="brand">
-        LIORA · CHATS
+        LIORA · ORGANIZER
       </div>
 
       <div class="account">
@@ -1241,6 +1241,37 @@
   an einem Ort – organisiert in deinen eigenen Bereichen.
 </p>
 
+    <div class="organizer-explainer">
+
+  <p class="organizer-kicker">DEIN PERSÖNLICHER ORDNUNGSORT</p>
+
+  <h2>Was kannst du hier organisieren?</h2>
+
+  <p>
+    Alles, was einen Link hat und für dich wichtig ist.
+    Erstelle deine eigenen Bereiche und sammle darin genau das,
+    was du schnell wiederfinden möchtest.
+  </p>
+
+  <div class="organizer-examples">
+    <span>ChatGPT-Chats</span>
+    <span>Canva-Projekte</span>
+    <span>Dokumente</span>
+    <span>Kundenlinks</span>
+    <span>Tentary-Seiten</span>
+    <span>Websites</span>
+    <span>Recherche</span>
+    <span>Inspiration</span>
+  </div>
+
+  <p class="organizer-own-way">
+    Du bestimmst die Struktur – zum Beispiel
+    <strong>NYRA</strong>, <strong>Content</strong>,
+    <strong>Kunden</strong>, <strong>Launch</strong>
+    oder einfach deine ganz eigenen Bereiche.
+  </p>
+
+</div>
 
     <div class="top-actions">
 
@@ -1315,7 +1346,7 @@
         class="search"
         id="search"
         type="search"
-        placeholder="Chats durchsuchen …"
+        placeholder="Links durchsuchen …"
         oninput="render()"
       >
 
@@ -1337,7 +1368,7 @@
 
 
     <p class="notice">
-      Liora Chats speichert deine selbst angelegten Bereiche
+      Liora Organizer speichert deine selbst angelegten Bereiche
       und die von dir hinterlegten Chat-Verweise.
       Der eigentliche Chat bleibt bei ChatGPT.
     </p>
@@ -1358,7 +1389,7 @@
       </h2>
 
       <p class="modal-description">
-        Erstelle deine eigene Struktur für deine Chats.
+        Erstelle deine eigene Struktur für deine Links.
       </p>
 
       <label for="projectName">
@@ -1478,7 +1509,7 @@
         <button
           type="submit"
           class="primary"
-          id="chatSaveButton"
+          id="linkSaveButton"
         >
           Chat speichern
         </button>
@@ -1507,7 +1538,7 @@
         </strong>
 
         Es wird nur der gespeicherte Link aus
-        Liora Chats entfernt.
+        Liora Organizer entfernt.
 
         <br><br>
 
@@ -1755,7 +1786,7 @@ document
   }
 
   messageBox.textContent =
-    "Dein neues Passwort wurde gespeichert. Du kannst Liora Chats jetzt damit verwenden.";
+    "Dein neues Passwort wurde gespeichert. Du kannst Liora Organizer jetzt damit verwenden.";
   messageBox.style.display = "block";
 
   document.getElementById("newPassword").value = "";
@@ -1916,7 +1947,7 @@ supabaseClient.auth.onAuthStateChange((event) => {
         data: chatRows,
         error: chatError
       } = await supabaseClient
-        .from("Chats")
+        .from("chat")
         .select("*")
         .order("created_at", {
           ascending: true
@@ -1992,7 +2023,7 @@ supabaseClient.auth.onAuthStateChange((event) => {
             Noch keine Bereiche vorhanden.
             <br><br>
             Erstelle deinen ersten Bereich und
-            organisiere deine Chats so,
+            organisiere deine Links so,
             wie es zu dir passt.
           </div>
         `;
@@ -2141,7 +2172,7 @@ supabaseClient.auth.onAuthStateChange((event) => {
 
           : `
             <div class="empty">
-              Noch keine Chats in diesem Bereich.
+              Noch keine Links in diesem Bereich.
             </div>
           `;
 
@@ -2202,7 +2233,7 @@ supabaseClient.auth.onAuthStateChange((event) => {
 
         html = `
           <div class="empty">
-            Keine passenden Chats gefunden.
+            Keine passenden Links gefunden.
           </div>
         `;
 
@@ -2386,7 +2417,7 @@ supabaseClient.auth.onAuthStateChange((event) => {
       if (!projects.length) {
 
         alert(
-          "Erstelle zuerst einen Bereich für deine Chats."
+          "Erstelle zuerst einen Bereich für deine Links."
         );
 
         openNewProject();
