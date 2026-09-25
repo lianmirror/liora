@@ -354,6 +354,89 @@
     gap: 11px;
     flex-wrap: wrap;
   }
+
+  /* =========================
+   ORGANIZER ERKLÄRUNG
+========================= */
+
+.organizer-explainer {
+  margin: 30px 0 26px;
+  padding: 26px 28px;
+  border: 1px solid rgba(114, 47, 66, 0.12);
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 250, 247, 0.96),
+      rgba(247, 233, 233, 0.72)
+    );
+  box-shadow: 0 12px 35px rgba(74, 39, 44, 0.05);
+}
+
+.organizer-kicker {
+  margin: 0 0 9px;
+  color: var(--wine);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2.2px;
+}
+
+.organizer-explainer h2 {
+  margin: 0 0 10px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 25px;
+  font-weight: 500;
+  color: var(--espresso);
+}
+
+.organizer-explainer > p:not(.organizer-kicker) {
+  max-width: 700px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.organizer-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 19px 0;
+}
+
+.organizer-examples span {
+  padding: 7px 11px;
+  border: 1px solid rgba(114, 47, 66, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 250, 247, 0.9);
+  color: var(--wine);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.organizer-own-way {
+  padding-top: 17px;
+  border-top: 1px solid rgba(114, 47, 66, 0.1);
+}
+
+.organizer-own-way strong {
+  color: var(--espresso);
+}
+
+@media (max-width: 650px) {
+  .organizer-explainer {
+    padding: 21px 18px;
+    border-radius: 20px;
+  }
+
+  .organizer-explainer h2 {
+    font-size: 22px;
+  }
+
+  .organizer-examples {
+    gap: 6px;
+  }
+}
   
 /* =========================
    LIORA TOOLS
