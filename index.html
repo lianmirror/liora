@@ -2638,19 +2638,14 @@ supabaseClient.auth.onAuthStateChange((event) => {
 
     function openChat(chatId) {
 
-      const chat =
-        findChat(chatId);
+  const chat = findChat(chatId);
 
-      if (!chat) {
-        return;
-      }
+  if (!chat) {
+    return;
+  }
 
-      window.open(
-        chat.url,
-        "_blank",
-        "noopener,noreferrer"
-      );
-    }
+  window.location.href = chat.url;
+}
 
 
     /* =========================
