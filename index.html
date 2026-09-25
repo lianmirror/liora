@@ -2030,7 +2030,7 @@ supabaseClient.auth.onAuthStateChange((event) => {
         data: chatRows,
         error: chatError
       } = await supabaseClient
-        .from("chats")
+        .from("Chats")
         .select("*")
         .order("created_at", {
           ascending: true
