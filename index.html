@@ -971,6 +971,10 @@
           Einloggen
         </button>
 
+        <button type="button" id="forgotPasswordButton">
+        Passwort vergessen?
+        </button>
+
         <div
           id="loginError"
           class="login-error"
@@ -978,6 +982,36 @@
 
       </form>
 
+<div id="resetPasswordBox" class="hidden">
+  <h2>Neues Passwort</h2>
+
+  <p class="login-text">
+    Lege jetzt dein neues Passwort für Liora Chats fest.
+  </p>
+
+  <label for="newPassword">Neues Passwort</label>
+
+  <input
+    id="newPassword"
+    type="password"
+    autocomplete="new-password"
+    placeholder="Mindestens 8 Zeichen"
+  >
+
+  <button
+    type="button"
+    id="saveNewPasswordButton"
+    class="login-button"
+  >
+    Neues Passwort speichern
+  </button>
+
+  <div
+    id="resetPasswordMessage"
+    class="login-error"
+  ></div>
+</div>
+      
       <p class="login-note">
         Der Zugang zu Liora Chats ist ausschließlich
         für freigeschaltete Liora Kundinnen vorgesehen.
@@ -1353,8 +1387,83 @@
 
       await showMemberArea();
     }
+async function forgotPassword() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const errorBox = document.getElementById("loginError");
 
+  if (!email) {
+    errorBox.textContent = "Bitte gib zuerst deine E-Mail-Adresse ein.";
+    errorBox.style.display = "block";
+    return;
+  }
 
+  errorBox.style.display = "none";
+
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: "https://lianmirror.github.io/liora/"
+  });
+
+  if (error) {
+    errorBox.textContent = "Die E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.";
+    errorBox.style.display = "block";
+    return;
+  }
+
+  errorBox.textContent =
+    "Wenn für diese E-Mail ein Liora-Konto existiert, erhältst du gleich einen Link zum Zurücksetzen deines Passworts.";
+  errorBox.style.display = "block";
+}
+
+document
+  .getElementById("forgotPasswordButton")
+  .addEventListener("click", forgotPassword);
+async function saveNewPassword() {
+  const newPassword = document.getElementById("newPassword").value;
+  const messageBox = document.getElementById("resetPasswordMessage");
+  const button = document.getElementById("saveNewPasswordButton");
+
+  messageBox.style.display = "none";
+
+  if (newPassword.length < 8) {
+    messageBox.textContent = "Bitte wähle ein Passwort mit mindestens 8 Zeichen.";
+    messageBox.style.display = "block";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Wird gespeichert ...";
+
+  const { error } = await supabaseClient.auth.updateUser({
+    password: newPassword
+  });
+
+  button.disabled = false;
+  button.textContent = "Neues Passwort speichern";
+
+  if (error) {
+    messageBox.textContent =
+      "Das neue Passwort konnte nicht gespeichert werden. Bitte öffne den Link aus der E-Mail erneut.";
+    messageBox.style.display = "block";
+    return;
+  }
+
+  messageBox.textContent =
+    "Dein neues Passwort wurde gespeichert. Du kannst Liora Chats jetzt damit verwenden.";
+  messageBox.style.display = "block";
+
+  document.getElementById("newPassword").value = "";
+}
+
+document
+  .getElementById("saveNewPasswordButton")
+  .addEventListener("click", saveNewPassword);
+
+supabaseClient.auth.onAuthStateChange((event) => {
+  if (event === "PASSWORD_RECOVERY") {
+    document.getElementById("loginForm").classList.add("hidden");
+    document.getElementById("resetPasswordBox").classList.remove("hidden");
+  }
+});
     async function logout() {
 
       await supabaseClient.auth.signOut();
