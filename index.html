@@ -354,7 +354,98 @@
     gap: 11px;
     flex-wrap: wrap;
   }
+  
+/* =========================
+   LIORA TOOLS
+========================= */
 
+.liora-tools {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 24px 0 30px;
+}
+
+.liora-tool-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 92px;
+  padding: 18px 20px;
+  border: 1px solid rgba(114, 47, 66, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 250, 247, 0.88);
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(75, 35, 48, 0.07);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.liora-tool-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(114, 47, 66, 0.3);
+  box-shadow: 0 14px 30px rgba(75, 35, 48, 0.12);
+}
+
+.liora-tool-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: rgba(114, 47, 66, 0.09);
+  color: var(--wine);
+  font-size: 21px;
+  font-weight: 500;
+}
+
+.liora-tool-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.liora-tool-content h3 {
+  margin: 0 0 5px;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.liora-tool-content p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.liora-tool-arrow {
+  color: var(--wine);
+  font-size: 20px;
+  transition: transform 0.2s ease;
+}
+
+.liora-tool-card:hover .liora-tool-arrow {
+  transform: translateX(3px);
+}
+
+/* Auf kleinen Bildschirmen untereinander */
+@media (max-width: 760px) {
+  .liora-tools {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 20px 0 26px;
+  }
+
+  .liora-tool-card {
+    min-height: 78px;
+    padding: 15px 16px;
+  }
+}
 
   /* =========================
      BUTTONS
@@ -1153,6 +1244,52 @@
 
     </div>
 
+    <!-- LIORA TOOLS -->
+<div class="liora-tools">
+
+  <a
+    class="liora-tool-card"
+    href="https://chatgpt.com/g/g-6a3c0b235b588191b9b64de2b693c3ea-liora-studio-2-0"
+    target="_blank"
+    rel="noopener"
+  >
+    <div class="liora-tool-icon">✦</div>
+    <div class="liora-tool-content">
+      <h3>Liora Studio</h3>
+      <p>Kreativität &amp; Gestaltung</p>
+    </div>
+    <span class="liora-tool-arrow">→</span>
+  </a>
+
+  <a
+    class="liora-tool-card"
+    href="https://chatgpt.com/g/g-6a3a3840d858819195e70ae7579e98ee-liora-director"
+    target="_blank"
+    rel="noopener"
+  >
+    <div class="liora-tool-icon">◇</div>
+    <div class="liora-tool-content">
+      <h3>Liora Director</h3>
+      <p>Strategie &amp; Planung</p>
+    </div>
+    <span class="liora-tool-arrow">→</span>
+  </a>
+
+  <a
+    class="liora-tool-card"
+    href="https://chatgpt.com/g/g-69fd9cf2d000819184114eb655a5fe7a-liora-video"
+    target="_blank"
+    rel="noopener"
+  >
+    <div class="liora-tool-icon">▶</div>
+    <div class="liora-tool-content">
+      <h3>Liora Video</h3>
+      <p>Video &amp; Content</p>
+    </div>
+    <span class="liora-tool-arrow">→</span>
+  </a>
+
+</div>
 
     <div class="search-area">
 
