@@ -1490,7 +1490,83 @@ async function forgotPassword() {
 document
   .getElementById("forgotPasswordButton")
   .addEventListener("click", forgotPassword);
-async function saveNewPassword() {
+    
+document
+  .getElementById("activateAccountButton")
+  .addEventListener("click", () => {
+    document.getElementById("loginForm").classList.add("hidden");
+    document.getElementById("resetPasswordBox").classList.add("hidden");
+    document.getElementById("activateAccountBox").classList.remove("hidden");
+  });
+    async function activateAccount() {
+  const email = document
+    .getElementById("activateEmail")
+    .value
+    .trim()
+    .toLowerCase();
+
+  const password =
+    document.getElementById("activatePassword").value;
+
+  const passwordConfirm =
+    document.getElementById("activatePasswordConfirm").value;
+
+  const button =
+    document.getElementById("createAccountButton");
+
+  const messageBox =
+    document.getElementById("activateAccountMessage");
+
+  messageBox.style.display = "none";
+  messageBox.textContent = "";
+
+  if (!email) {
+    messageBox.textContent = "Bitte gib deine E-Mail-Adresse ein.";
+    messageBox.style.display = "block";
+    return;
+  }
+
+  if (password.length < 8) {
+    messageBox.textContent =
+      "Bitte wähle ein Passwort mit mindestens 8 Zeichen.";
+    messageBox.style.display = "block";
+    return;
+  }
+
+  if (password !== passwordConfirm) {
+    messageBox.textContent =
+      "Die beiden Passwörter stimmen nicht überein.";
+    messageBox.style.display = "block";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Zugang wird erstellt …";
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password
+  });
+
+  button.disabled = false;
+  button.textContent = "Zugang erstellen";
+
+  if (error) {
+    messageBox.textContent =
+      "Der Zugang konnte nicht erstellt werden. Prüfe bitte deine E-Mail-Adresse oder verwende „Passwort vergessen?“, falls bereits ein Zugang besteht.";
+    messageBox.style.display = "block";
+    return;
+  }
+
+  messageBox.textContent =
+    "Fast geschafft! Bitte prüfe dein E-Mail-Postfach und bestätige deine E-Mail-Adresse.";
+  messageBox.style.display = "block";
+}
+    document
+  .getElementById("createAccountButton")
+  .addEventListener("click", activateAccount);
+    
+    async function saveNewPassword() {
   const newPassword = document.getElementById("newPassword").value;
   const messageBox = document.getElementById("resetPasswordMessage");
   const button = document.getElementById("saveNewPasswordButton");
