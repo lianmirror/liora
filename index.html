@@ -1529,11 +1529,25 @@ supabaseClient.auth.onAuthStateChange((event) => {
       }
 
 
-      if (data.session?.user) {
+   if (data.session?.user) {
 
-        currentUser = data.session.user;
+  currentUser = data.session.user;
 
-        await showMemberArea();
+  const isPasswordRecovery =
+    window.location.hash.includes("type=recovery") ||
+    window.location.search.includes("type=recovery");
+
+  if (isPasswordRecovery) {
+    document.getElementById("memberApp").classList.add("hidden");
+    document.getElementById("loginPage").classList.remove("hidden");
+    document.getElementById("loginForm").classList.add("hidden");
+    document.getElementById("resetPasswordBox").classList.remove("hidden");
+    return;
+  }
+
+  await showMemberArea();
+
+}
 
       } else {
 
