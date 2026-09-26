@@ -1823,15 +1823,18 @@ document
   button.disabled = false;
   button.textContent = "Zugang erstellen";
 
-  if (error) {
-    messageBox.textContent =
-      "Der Zugang konnte nicht erstellt werden.
+if (error) {
+  messageBox.textContent =
+    `Der Zugang konnte nicht erstellt werden.
 Prüfe bitte deine E-Mail-Adresse und versuche es erneut.
+
 Tipp: Tippe deine E-Mail-Adresse vollständig von Hand ein. Bitte nicht kopieren/einfügen und nicht automatisch vom Smartphone ausfüllen lassen.
-Falls du bereits einen Zugang erstellt hast, nutze „Passwort vergessen?“;
-    messageBox.style.display = "block";
-    return;
-  }
+
+Falls du bereits einen Zugang erstellt hast, nutze „Passwort vergessen?“.`;
+
+  messageBox.style.display = "block";
+  return;
+}
 
   messageBox.textContent =
     "Fast geschafft! Bitte prüfe dein E-Mail-Postfach und bestätige deine E-Mail-Adresse.";
