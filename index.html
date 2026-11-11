@@ -3003,5 +3003,647 @@ supabaseClient.auth.onAuthStateChange((event) => {
 
   </script>
 
+<!-- LIORA ADMINBEREICH -->
+<style>
+  #lioraAdminButton {
+    white-space: nowrap;
+  }
+
+  #lioraAdminDialog {
+    width: min(850px, calc(100% - 24px));
+    max-height: 90vh;
+  }
+
+  .liora-admin-body {
+    padding: 28px;
+  }
+
+  .liora-admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .liora-admin-header h2 {
+    margin: 0 0 8px;
+    font-family: Georgia, serif;
+    font-size: 30px;
+    font-weight: 500;
+  }
+
+  .liora-admin-description {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .liora-admin-add {
+    margin: 24px 0;
+    padding: 20px;
+    background: var(--rose-soft);
+    border-radius: 18px;
+  }
+
+  .liora-admin-add h3 {
+    margin: 0 0 12px;
+    font-size: 16px;
+  }
+
+  .liora-admin-add form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .liora-admin-add input {
+    flex: 1 1 230px;
+  }
+
+  .liora-admin-message {
+    margin: 12px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .liora-admin-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .liora-admin-stat {
+    padding: 13px 16px;
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    background: var(--card);
+    font-size: 13px;
+  }
+
+  .liora-admin-stat strong {
+    display: block;
+    font-size: 23px;
+    color: var(--wine);
+  }
+
+  .liora-admin-list {
+    display: grid;
+    gap: 10px;
+    max-height: 45vh;
+    overflow-y: auto;
+    margin-top: 16px;
+  }
+
+  .liora-admin-member {
+    padding: 15px;
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    background: #fff;
+  }
+
+  .liora-admin-member strong {
+    display: block;
+    overflow-wrap: anywhere;
+    margin-bottom: 8px;
+  }
+
+  .liora-admin-member-details {
+    display: grid;
+    gap: 5px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .liora-admin-status {
+    display: inline-block;
+    width: fit-content;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: var(--wine-soft);
+    color: var(--wine);
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  @media (max-width: 650px) {
+    .liora-admin-body {
+      padding: 20px 16px;
+    }
+
+    .liora-admin-header h2 {
+      font-size: 25px;
+    }
+
+    #lioraAdminButton {
+      padding: 10px 12px;
+      font-size: 12px;
+    }
+
+    .liora-admin-add form button {
+      width: 100%;
+    }
+  }
+</style>
+
+<dialog id="lioraAdminDialog">
+  <div class="liora-admin-body">
+
+    <div class="liora-admin-header">
+      <div>
+        <h2>Mitgliederverwaltung</h2>
+        <p class="liora-admin-description">
+          Verwalte deine Liora-Freigaben und sieh,
+          wer seinen Zugang bereits aktiviert hat.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="secondary"
+        onclick="lioraCloseAdmin()"
+        aria-label="Adminbereich schließen"
+      >
+        ✕
+      </button>
+    </div>
+
+    <section class="liora-admin-add">
+      <h3>Neues Mitglied freischalten</h3>
+
+      <form id="lioraAdminAddForm">
+        <input
+          id="lioraAdminEmail"
+          type="email"
+          placeholder="E-Mail-Adresse eingeben"
+          autocomplete="off"
+          required
+        >
+
+        <button
+          id="lioraAdminAddButton"
+          type="submit"
+          class="primary"
+        >
+          Freischalten
+        </button>
+      </form>
+
+      <p
+        id="lioraAdminMessage"
+        class="liora-admin-message"
+        role="status"
+        aria-live="polite"
+      ></p>
+    </section>
+
+    <div
+      id="lioraAdminSummary"
+      class="liora-admin-summary"
+    ></div>
+
+    <label for="lioraAdminSearch">
+      Mitglieder suchen
+    </label>
+
+    <input
+      id="lioraAdminSearch"
+      type="search"
+      placeholder="Nach E-Mail-Adresse suchen …"
+    >
+
+    <div
+      id="lioraAdminList"
+      class="liora-admin-list"
+    >
+      Mitglieder werden geladen …
+    </div>
+
+    <p class="liora-admin-description">
+      Der letzte Login stammt aus Supabase.
+      Die Organizer-Nutzung wird erst ab Aktivierung
+      der Aktivitätserfassung gespeichert.
+    </p>
+
+  </div>
+</dialog>
+
+<script>
+(function () {
+  "use strict";
+
+  const LIORA_ADMIN_ID =
+    "f22bcd14-5c82-40be-a208-49c4d4f40015";
+
+  let adminMembers = [];
+  let lastActivitySent = 0;
+  let activityInProgress = false;
+
+  function isLioraAdmin() {
+    return Boolean(
+      currentUser &&
+      currentUser.id === LIORA_ADMIN_ID
+    );
+  }
+
+  function formatLioraDate(value) {
+    if (!value) {
+      return "Noch nicht erfasst";
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return "Nicht verfügbar";
+    }
+
+    return new Intl.DateTimeFormat("de-CH", {
+      dateStyle: "medium",
+      timeStyle: "short"
+    }).format(date);
+  }
+
+  function updateAdminButton() {
+    const button =
+      document.getElementById("lioraAdminButton");
+
+    if (!button) {
+      return;
+    }
+
+    button.classList.toggle(
+      "hidden",
+      !isLioraAdmin()
+    );
+  }
+
+  async function recordLioraActivity() {
+    if (!currentUser || document.hidden) {
+      return;
+    }
+
+    const now = Date.now();
+
+    if (
+      activityInProgress ||
+      now - lastActivitySent < 60000
+    ) {
+      return;
+    }
+
+    activityInProgress = true;
+
+    const userId = currentUser.id;
+
+    try {
+      const { error } = await supabaseClient
+        .from("member_activity")
+        .upsert(
+          {
+            user_id: userId,
+            last_active_at: new Date().toISOString()
+          },
+          {
+            onConflict: "user_id"
+          }
+        );
+
+      if (error) {
+        console.warn(
+          "Liora Aktivität konnte nicht gespeichert werden:",
+          error.message
+        );
+      } else {
+        lastActivitySent = Date.now();
+      }
+    } catch (error) {
+      console.warn("Liora Aktivität:", error);
+    } finally {
+      activityInProgress = false;
+    }
+  }
+
+  async function loadLioraAdminMembers() {
+    if (!isLioraAdmin()) {
+      return;
+    }
+
+    const list =
+      document.getElementById("lioraAdminList");
+
+    list.textContent = "Mitglieder werden geladen …";
+
+    const { data, error } = await supabaseClient
+      .rpc("liora_admin_members");
+
+    if (error) {
+      console.error(error);
+
+      list.textContent =
+        "Die Mitglieder konnten nicht geladen werden: " +
+        error.message;
+
+      return;
+    }
+
+    adminMembers = Array.isArray(data) ? data : [];
+
+    renderLioraAdminMembers();
+  }
+
+  function renderLioraAdminMembers() {
+    const list =
+      document.getElementById("lioraAdminList");
+
+    const summary =
+      document.getElementById("lioraAdminSummary");
+
+    const search =
+      document.getElementById("lioraAdminSearch")
+        .value.trim().toLowerCase();
+
+    const total = adminMembers.length;
+
+    const registered = adminMembers.filter(
+      member => member.registered
+    ).length;
+
+    const active = adminMembers.filter(
+      member => member.active
+    ).length;
+
+    summary.innerHTML = `
+      <div class="liora-admin-stat">
+        <strong>${total}</strong>
+        Freigaben
+      </div>
+      <div class="liora-admin-stat">
+        <strong>${active}</strong>
+        Aktiv
+      </div>
+      <div class="liora-admin-stat">
+        <strong>${registered}</strong>
+        Registriert
+      </div>
+      <div class="liora-admin-stat">
+        <strong>${total - registered}</strong>
+        Noch nicht registriert
+      </div>
+    `;
+
+    const filtered = adminMembers.filter(
+      member => String(member.email || "")
+        .toLowerCase()
+        .includes(search)
+    );
+
+    if (!filtered.length) {
+      list.textContent =
+        "Keine passenden Mitglieder gefunden.";
+      return;
+    }
+
+    list.innerHTML = filtered.map(member => {
+      const email = escapeHtml(member.email);
+
+      const status = member.registered
+        ? "Registriert"
+        : "Noch nicht registriert";
+
+      const permission = member.active
+        ? "Freigeschaltet"
+        : "Deaktiviert";
+
+      return `
+        <article class="liora-admin-member">
+          <strong>${email}</strong>
+
+          <div class="liora-admin-member-details">
+            <span class="liora-admin-status">
+              ${status}
+            </span>
+
+            <span>
+              Zugang: ${permission}
+            </span>
+
+            <span>
+              Registriert am:
+              ${formatLioraDate(member.registered_at)}
+            </span>
+
+            <span>
+              Letzter Login:
+              ${formatLioraDate(member.last_login_at)}
+            </span>
+
+            <span>
+              Letzte Organizer-Nutzung:
+              ${formatLioraDate(member.last_active_at)}
+            </span>
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  window.lioraOpenAdmin = async function () {
+    if (!isLioraAdmin()) {
+      return;
+    }
+
+    const dialog =
+      document.getElementById("lioraAdminDialog");
+
+    if (!dialog.open) {
+      dialog.showModal();
+    }
+
+    await loadLioraAdminMembers();
+  };
+
+  window.lioraCloseAdmin = function () {
+    const dialog =
+      document.getElementById("lioraAdminDialog");
+
+    if (dialog.open) {
+      dialog.close();
+    }
+  };
+
+  async function addLioraAdminMember(event) {
+    event.preventDefault();
+
+    if (!isLioraAdmin()) {
+      return;
+    }
+
+    const input =
+      document.getElementById("lioraAdminEmail");
+
+    const button =
+      document.getElementById("lioraAdminAddButton");
+
+    const message =
+      document.getElementById("lioraAdminMessage");
+
+    const email = input.value.trim().toLowerCase();
+
+    if (!email || !input.checkValidity()) {
+      message.textContent =
+        "Bitte eine gültige E-Mail-Adresse eingeben.";
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Wird gespeichert …";
+    message.textContent = "";
+
+    try {
+      const { data, error } = await supabaseClient
+        .rpc("liora_admin_add_member", {
+          p_email: email
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      message.textContent =
+        data || "Mitglied erfolgreich freigeschaltet.";
+
+      input.value = "";
+
+      await loadLioraAdminMembers();
+    } catch (error) {
+      console.error(error);
+
+      message.textContent =
+        "Freischaltung nicht möglich: " +
+        error.message;
+    } finally {
+      button.disabled = false;
+      button.textContent = "Freischalten";
+    }
+  }
+
+  function installLioraAdmin() {
+    const account = document.querySelector(
+      "#memberApp .account"
+    );
+
+    const logoutButton = account?.querySelector(
+      'button[onclick="logout()"]'
+    );
+
+    if (!account || !logoutButton) {
+      console.error(
+        "Liora Admin: Kontobereich nicht gefunden."
+      );
+      return;
+    }
+
+    const button = document.createElement("button");
+
+    button.id = "lioraAdminButton";
+    button.type = "button";
+    button.className = "secondary hidden";
+    button.textContent = "Admin";
+    button.addEventListener(
+      "click",
+      window.lioraOpenAdmin
+    );
+
+    account.insertBefore(button, logoutButton);
+
+    document
+      .getElementById("lioraAdminAddForm")
+      .addEventListener(
+        "submit",
+        addLioraAdminMember
+      );
+
+    document
+      .getElementById("lioraAdminSearch")
+      .addEventListener(
+        "input",
+        renderLioraAdminMembers
+      );
+
+    document.addEventListener("click", function () {
+      if (
+        currentUser &&
+        !document.getElementById("memberApp")
+          .classList.contains("hidden")
+      ) {
+        recordLioraActivity();
+      }
+    });
+
+    document.addEventListener(
+      "visibilitychange",
+      function () {
+        if (!document.hidden) {
+          recordLioraActivity();
+        }
+      }
+    );
+
+    const memberApp =
+      document.getElementById("memberApp");
+
+    const observer = new MutationObserver(function () {
+      updateAdminButton();
+
+      if (
+        currentUser &&
+        !memberApp.classList.contains("hidden")
+      ) {
+        recordLioraActivity();
+      } else {
+        window.lioraCloseAdmin();
+      }
+    });
+
+    observer.observe(memberApp, {
+      attributes: true,
+      attributeFilter: ["class"]
+    });
+
+    updateAdminButton();
+
+    if (
+      currentUser &&
+      !memberApp.classList.contains("hidden")
+    ) {
+      recordLioraActivity();
+    }
+  }
+
+  installLioraAdmin();
+
+  const originalShowMemberArea = showMemberArea;
+
+  showMemberArea = async function () {
+    await originalShowMemberArea();
+
+    updateAdminButton();
+    recordLioraActivity();
+  };
+
+  const originalLogout = logout;
+
+  logout = async function () {
+    window.lioraCloseAdmin();
+
+    await originalLogout();
+
+    updateAdminButton();
+  };
+})();
+</script>
+
+  
 </body>
 </html>
