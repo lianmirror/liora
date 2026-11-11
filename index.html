@@ -667,6 +667,68 @@
     gap: 17px;
   }
 
+
+  .projects:has(.agenda-register) {
+    grid-template-columns: minmax(140px, 210px) minmax(0, 1fr);
+    gap: 0;
+    align-items: start;
+  }
+
+  .agenda-register {
+    display: grid;
+    gap: 6px;
+    padding-block: 12px;
+  }
+
+  .agenda-tab {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid rgba(70,40,60,.18);
+    border-radius: 12px 0 0 12px;
+    margin-right: 10px;
+    background: var(--agenda-color);
+    color: #352633;
+    font: inherit;
+    text-align: left;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+  }
+
+  .agenda-tab[aria-pressed="true"] {
+    margin-right: -1px;
+    z-index: 1;
+    font-weight: 700;
+  }
+
+  .agenda-content {
+    display: grid;
+    gap: 17px;
+    min-width: 0;
+  }
+
+  @media (max-width: 680px) {
+    .projects:has(.agenda-register) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .agenda-register {
+      display: flex;
+      overflow-x: auto;
+      padding: 4px 3px 8px;
+    }
+
+    .agenda-tab,
+    .agenda-tab[aria-pressed="true"] {
+      flex: 0 0 auto;
+      max-width: 220px;
+      margin: 0;
+      border-radius: 12px;
+    }
+  }
+
   .project {
     position: relative;
     overflow: visible;
@@ -2093,6 +2155,9 @@ supabaseClient.auth.onAuthStateChange((event) => {
        ANZEIGE
     ========================= */
 
+    let activeAgendaProject = null;
+    const agendaColors = ["#dcf3e7", "#eadef9", "#fae0df", "#f6ebc8", "#dcebf8"];
+
     function render() {
 
       const container =
@@ -2121,10 +2186,17 @@ supabaseClient.auth.onAuthStateChange((event) => {
       }
 
 
+      if (!projects.some(project => String(project.id) === activeAgendaProject)) {
+        activeAgendaProject = null;
+      }
+
       let html = "";
 
-
       projects.forEach(project => {
+        if (!search && activeAgendaProject !== null &&
+            String(project.id) !== activeAgendaProject) {
+          return;
+        }
 
         let chats =
           [...(project.chats || [])];
@@ -2329,7 +2401,52 @@ supabaseClient.auth.onAuthStateChange((event) => {
       }
 
 
-      container.innerHTML = html;
+      if (search) {
+        container.innerHTML = html;
+        return;
+      }
+
+      container.innerHTML = `
+        <nav class="agenda-register" aria-label="Meine Bereiche"></nav>
+        <div class="agenda-content">${html}</div>
+      `;
+
+      const register = container.querySelector(".agenda-register");
+      const tabs = [
+        { id: null, label: "Alle Bereiche", color: "#f4edf1" },
+        ...projects.map((project, index) => ({
+          id: String(project.id),
+          label: project.name,
+          count: (project.chats || []).length,
+          color: agendaColors[index % agendaColors.length]
+        }))
+      ];
+
+      tabs.forEach(({ id, label, count, color }) => {
+        const tab = document.createElement("button");
+        tab.type = "button";
+        tab.className = "agenda-tab";
+        tab.style.setProperty("--agenda-color", color);
+        tab.setAttribute("aria-pressed", String(id === activeAgendaProject));
+
+        const title = document.createElement("span");
+        title.textContent = label;
+        tab.append(title);
+        if (count !== undefined) {
+          const badge = document.createElement("span");
+          badge.textContent = count;
+          badge.setAttribute("aria-label", `${count} Chats`);
+          tab.append(badge);
+        }
+
+        tab.addEventListener("click", () => {
+          const index = Array.from(register.children).indexOf(tab);
+          activeAgendaProject = id;
+          render();
+          container.querySelector(".agenda-register")?.children[index]?.focus();
+        });
+        register.append(tab);
+      });
     }
 
 
